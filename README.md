@@ -14,7 +14,7 @@ This integration can be run from any web server that supports Python. The simple
 If you don't already have a Heroku account please go create one [here](https://www.heroku.com/) (it's free!).
 
 1. Deploy integration to Heroku
- 1. Fork the [gitlab-mattermost](https://github.com/mattermost/gitlab-mattermost) repository on GitHub by clicking _Fork_ in the top-right and selecting your account if it asks.
+ 1. Fork the [mattermost-integration-gitlab](https://github.com/mattermost/mattermost-integration-gitlab) repository on GitHub by clicking _Fork_ in the top-right and selecting your account if it asks.
  1. Log in to [Heroku](https://www.heroku.com/) and go to your [dashboard](https://dashboard.heroku.com/apps).
  2. Click the `+` in the top-right corner to add a new _app_.
  3. Give your app a name and select your region, then click _Create App_.
