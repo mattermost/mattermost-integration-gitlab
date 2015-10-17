@@ -1,6 +1,6 @@
 # GitLab to Mattermost Integration
 
-This integration posts events from GitLab to Mattermost by translating output from GitLab's outgoing webhooks to Mattermost's incoming webhooks. You can find GitLab's outgoing webhooks described [here](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/web_hooks/web_hooks.md) and Mattermost's incoming webhooks described [here](https://github.com/mattermost/platform/blob/master/doc/integrations/webhooks/Incoming-Webhooks.md).
+This integration posts events from GitLab to Mattermost by translating output from [GitLab's outgoing webhooks](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/web_hooks/web_hooks.md) to [Mattermost's incoming webhooks](https://github.com/mattermost/platform/blob/master/doc/integrations/webhooks/Incoming-Webhooks.md).
 
 ## Installing
 
