@@ -54,11 +54,11 @@ Here's how to start:
 
 ### Linux/Ubuntu 14.04 Web Server Install
 
-The following procedure shows how to install this project on a Linux-based web server. The following instructions work behind a firewall so long as the web server has access to your GitLab and Mattermost instances. 
+The following procedure shows how to install this project on a Linux web server running Ubuntu 14.04. The following instructions work behind a firewall so long as the web server has access to your GitLab and Mattermost instances. 
 
 To install this project using a Linux-based web server, you will need:
 
-1. A Linux/Ubuntu 14.04 web server supporting Python 2.7 or a compatible version.
+1. A Linux/Ubuntu 14.04 web server supporting Python 2.7 or a compatible version. Other compatible operating systems and Python versions should also work. 
 
 Here's how to start:
 
