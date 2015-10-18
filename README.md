@@ -8,7 +8,7 @@ Mattermost community members are invited to fork this repo to create new integra
 
 To run this integration you need:
 
-1. A **web server** supporting Python 2.6 or higher to run this software (optionally, you could use a service provider like [Heroku](http://heroku.com) - see instructions below)
+1. A **web server** supporting Python XXX.XXX or a compatible version to run this software (optionally, you could use a service provider like [Heroku](http://heroku.com) - see instructions below)
 2. A **[GitLab account](https://about.gitlab.com/)** with a repository to which you have administrator access
 3. A **[Mattermost account](http://www.mattermost.org/)** [where incoming webhooks are enabled](https://github.com/mattermost/platform/blob/master/doc/integrations/webhooks/Incoming-Webhooks.md#enabling-incoming-webhooks)
 
@@ -52,17 +52,22 @@ Here's how to start:
   3. If you have any issues, it's probably our fault for not well documenting the setup. So please go to http://forum.mattermost.org and let us know that our instructions didn't work, and let us know which steps were the most unclear. 
 
 
-### Linux Web Server Install
+### Linux/Ubuntu 14.04 Web Server Install
 
 The following procedure shows how to install this project on a Linux-based web server. The following instructions work behind a firewall so long as the web server has access to your GitLab and Mattermost instances. 
 
-3. Set up your Mattermost incoming webhook
- 1. Log in to your Mattermost account, and open your _Account Settings_ by clicking in the top-left.
- 2. Go to the _Integrations_ tab and click _Edit_ next to _Manage your incoming webhooks_.
- 3. Select the channel you want the GitLab events to post to, then click _Add_.
- 4. Copy the _URL_ from the newly created webhook and keep it handy for the next steps.
+To install this project using a Linux-based web server, you will need:
 
-1. Set up your server
+1. A Linux/Ubuntu 14.04 web server supporting Python XXX.XXX or a compatible version.
+
+Here's how to start:
+
+1. **Connect your project to your Mattermost account for incoming webhooks**
+ 1. Log in to your Mattermost account, and from three dot icon at the top of the left-hand menu go to **Account Settings** > **Integrations** > **Incoming Webhooks** > **Edit**.
+ 2. Under **Add a new incoming webhook** select the channel in which you want GitLab notifications to appear, then click **Add**, which should create a new entry below.
+ 3. From the new entry below, copy the contents next to **URL** (we'll refer to this as `https://<your-mattermost-webhook-URL>` and add it to your Heroku server).
+
+2. Set up your server
  1. Stand-up a Linux/Ubuntu server on AWS, your own machine or somewhere else.
  1. SSH into the machine, or just open your terminal if you're installing locally.
  1. Make sure you have Python 2.7+ installed. If it's not installed you can find it [here](https://www.python.org/downloads/)
