@@ -8,7 +8,7 @@ Mattermost community members are invited to fork this repo to create new integra
 
 To run this integration you need:
 
-1. A **web server** supporting Python 2.6 or higher to run this software
+1. A **web server** supporting Python 2.6 or higher to run this software (optionally, you could use a service provider like [Heroku](http://heroku.com) - see instructions below)
 2. A **[GitLab account](https://about.gitlab.com/)** with a repository to which you have administrator access
 3. A **[Mattermost account](http://www.mattermost.org/)** [where incoming webhooks are enabled](https://github.com/mattermost/platform/blob/master/doc/integrations/webhooks/Incoming-Webhooks.md#enabling-incoming-webhooks)
 
@@ -40,7 +40,7 @@ Here's how to start:
  3. Click **Add Web Hook** to check that a new entry about your webhook is added to the **Web hooks** section below the button. 
  4. Leave this page open as we'll come back to it to test that everything is working.
  
-4. **Connect your project to your Mattermost account for incoming webhook**
+4. **Connect your project to your Mattermost account for incoming webhooks**
  1. Log in to your Mattermost account, and from three dot icon at the top of the left-hand menu go to **Account Settings** > **Integrations** > **Incoming Webhooks** > **Edit**.
  2. Under **Add a new incoming webhook** select the channel in which you want GitLab notifications to appear, then click **Add**, which should create a new entry below.
  3. From the new entry below, copy the contents next to **URL** (we'll refer to this as `https://<your-mattermost-webhook-URL>` and add it to your Heroku server).
@@ -51,11 +51,10 @@ Here's how to start:
   2. If your GitLab project is not active, if it's brand new for example, try creating an issue as a test, and check that the new issues is posted to Mattermost
   3. If you have any issues, it's probably our fault for not well documenting the setup. So please go to http://forum.mattermost.org and let us know that our instructions didn't work, and let us know which steps were the most unclear. 
 
+
 ### Manual Install
 
-You of course don't have to use Heroku if you don't want to, you can easily set up the integration to run on practically any web server. It can even go behind your firewall as long as the integration still has access to your GitLab and Mattermost instances.
-
-Below are the loose instructions for setting up the integration on a Linux/Ubuntu server.
+The following procedure shows how to install this project on a Linux-based web server. The following instructions work behind a firewall so long as the web server has access to your GitLab and Mattermost instances. 
 
 3. Set up your Mattermost incoming webhook
  1. Log in to your Mattermost account, and open your _Account Settings_ by clicking in the top-left.
