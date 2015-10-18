@@ -30,12 +30,14 @@ Here's how to start:
   2. On the **Deploy** screen, select **GitHub** at the top, then click **Connect to GitHub** to authorize Herkou to access your GitHub account.
   3. Select your account and type `gitlab-mattermost` into the **repo-name** field, then click **Search** then the **Connect** button next to your repository.
   4. Scroll to the bottom of the new page and under the **Manual Deploy** section click **Deploy Branch**, making sure the `master` branch is selected.
-  5. Go to **Domains** > **Settings** and copy **Heroku Domain**.
+  5. Go to **Domains** > **Settings** and copy **Heroku Domain** (we'll refer to this as `http://<your-heroku-domain>/` and we'll need it in the next step)
 
 2. Connect your project to your GitLab account for outgoing webhooks
- 1. Log in to GitLab account and to the project from which you want to receive updates (make sure you have administrator access), then from the bottom-left go to **Settings** > **Web Hooks**
- 3. In the _URL_ field, enter the following `http://<your-heroku-domain>/new_event`. Make sure to replace `<your-heroku-domain>` with the domain you copied in the last step of the previous install section.
- 4. Select all the _Triggers_ you want to be posted into Mattermost, then click _Add Web Hook_.
+ 1. Log in to GitLab account and to the project from which you want to receive updates and to which you have administrator access. From the left side of the project screen, click on **Web Hooks** and in the **URL** field enter `http://<your-heroku-domain>/` from the previous step, plus the word `**new_event**` to create an entry that reads **`http://<your-heroku-domain>/new_event`** so events from your GitLab project are sent to your Heroku server. 
+ 2. From the same page, under **Trigger** select **Comment events**, **Issue events**, **Merge Request events** 
+ 3. (Recommended by optional): Encrypt your connection from GitLab to your project by selecting **Enable SSL verification**. If this option is not available and you're not familiar with how to set it up, contact your GitLab System Administrator for help. 
+ 3. Click **Add Web Hook** to check that a new entry about your webhook is added to the **Web hooks** section below the button. 
+ 
 
 3. Set up your Mattermost incoming webhook
  1. Log in to your Mattermost account, and open your _Account Settings_ by clicking in the top-left.
