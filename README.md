@@ -26,7 +26,7 @@ Here's how to start:
 1. **Create a copy of this project to manipulate**
   1. From the [Github repository of this project](https://github.com/mattermost/mattermost-integration-gitlab/edit/it-edits/README.md) click **Fork** in the top-right corner to create a copy of this project that you control and can update as you like. 
 2. **Deploy your project copy to Heroku**
-  1. Go to your [**Heroku Dashboard**](https://dashboard.heroku.com/apps) and click **+** in the top-right corner then **New App**. Give your app a name (like "Mattermost GitLab Integration"), select your region and click **Create App**.
+  1. Go to your [**Heroku Dashboard**](https://dashboard.heroku.com/apps) and click **+** in the top-right corner then **New App**. Give your app a name (like "integration-example"), select your region and click **Create App**.
   2. On the **Deploy** screen, select **GitHub** at the top, then click **Connect to GitHub** to authorize Herkou to access your GitHub account.
   3. Select your account and type `mattermost-integration-gitlab` into the **repo-name** field, then click **Search** then the **Connect** button next to your repository.
   4. Scroll to the bottom of the new page and under the **Manual Deploy** section click **Deploy Branch**, making sure the `master` branch is selected.
