@@ -12,7 +12,7 @@ To run this integration you need:
 2. A **[GitLab account](https://about.gitlab.com/)** with a repository to which you have administrator access
 3. A **[Mattermost account](http://www.mattermost.org/)** [where incoming webhooks are enabled](https://github.com/mattermost/platform/blob/master/doc/integrations/webhooks/Incoming-Webhooks.md#enabling-incoming-webhooks)
 
-Regarding 1. there are many options for web servers you can use, below we provide instructions for both [**Heroku**](https://github.com/mattermost/mattermost-integration-gitlab/blob/it-edits/README.md#heroku-based-install) and a general [**Linux/Ubuntu**](https://github.com/mattermost/mattermost-integration-gitlab/blob/it-edits/README.md#linux-web-server-install) server to get something running:  
+Regarding 1. there are many options for web servers you can use, below we provide instructions for both [**Heroku**](README.md#heroku-based-install) and a general [**Linux/Ubuntu**](README.md#linuxubuntu-1404-web-server-install) server to get something running:  
 
 ### Heroku-based Install
 
