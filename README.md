@@ -4,11 +4,14 @@ This software creates a process to post [issue](http://doc.gitlab.com/ee/web_hoo
 
 Mattermost community members are invited to fork this repo to create new integrations. To have your integration referenced on http://www.mattermost.org/webhooks/, please mail info@mattermost.com or tweet to [@MattermostHQ](https://twitter.com/mattermosthq). 
 
-## Installing
+## Requirements
 
-This integration can be run from any web server that supports Python. The simplest way to get it up and running fast is to use Heroku.
+To run this integration you need:
 
-**Note: These installation instructions assume you have both a GitLab account with a project you have admin access to, and a Mattermost account where [incoming webhooks are enabled](https://github.com/mattermost/platform/blob/master/doc/integrations/webhooks/Incoming-Webhooks.md#enabling-incoming-webhooks).**
+1. A web server supporting Python 2.6 or higher to run this software
+2. A [GitLab](https://about.gitlab.com/) account with a repository to which you have administrator access
+3. A [Mattermost](http://www.mattermost.org/) account [where incoming webhooks are enabled](https://github.com/mattermost/platform/blob/master/doc/integrations/webhooks/Incoming-Webhooks.md#enabling-incoming-webhooks).
+
 
 
 ### Quick Install with Heroku
