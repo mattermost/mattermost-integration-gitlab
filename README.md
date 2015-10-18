@@ -18,23 +18,22 @@ Regarding 1. there are many options for web servers you can use, below we provid
 
 To install this project using Heroku, you will need: 
 
-1. A Heroku account, available for free from [Heroku.com](http://heroku.com)
-2. A GitHub account, available for free from [GitHub.com](http://github.com) 
+1. A **Heroku account**, available for free from [Heroku.com](http://heroku.com)
+2. A **GitHub account**, available for free from [GitHub.com](http://github.com) 
 
 Here's how to start: 
 
-1. Fork this project using your GitHub account by clicking **Fork** in the top-right corner. 
-  2. This creates a copy for you to control and update as you like. 
-2. Deploy this project to Heroku
+1. Create a copy of this project to manipulate
+  1. From the [Github repository of this project](https://github.com/mattermost/mattermost-integration-gitlab/edit/it-edits/README.md) click **Fork** in the top-right corner to create a copy of this project that you control and can update as you like. 
+2. Deploy your project copy to Heroku
   1. Go to your [**Heroku Dashboard**](https://dashboard.heroku.com/apps) and click **+** in the top-right corner then **New App**. Give your app a name (like "Mattermost GitLab Integration"), select your region and click **Create App**.
   2. On the **Deploy** screen, select **GitHub** at the top, then click **Connect to GitHub** to authorize Herkou to access your GitHub account.
   3. Select your account and type `gitlab-mattermost` into the **repo-name** field, then click **Search** then the **Connect** button next to your repository.
   4. Scroll to the bottom of the new page and under the **Manual Deploy** section click **Deploy Branch**, making sure the `master` branch is selected.
   5. Go to **Domains** > **Settings** and copy **Heroku Domain**.
 
-2. Set up your GitLab outgoing webhook
- 1. Log in to your GitLab account, and go to the project you want events pushed from.
- 2. From your project page, click _Settings_ in the bottom-left and then click _Web Hooks_. Note that you need have admin access to the project.
+2. Connect your project to your GitLab account for outgoing webhooks
+ 1. Log in to GitLab account and to the project from which you want to receive updates (make sure you have administrator access), then from the bottom-left go to **Settings** > **Web Hooks**
  3. In the _URL_ field, enter the following `http://<your-heroku-domain>/new_event`. Make sure to replace `<your-heroku-domain>` with the domain you copied in the last step of the previous install section.
  4. Select all the _Triggers_ you want to be posted into Mattermost, then click _Add Web Hook_.
 
