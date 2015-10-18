@@ -14,7 +14,7 @@ To run this integration you need:
 
 Regarding 1. there are many options for web servers you can use, below we provide instructions for both **Heroku** and a general **Linux/Ubuntu** server to get something running:  
 
-### Quick Install with Heroku
+### Heroku-based Install
 
 To install this project using Heroku, you will need: 
 
@@ -52,7 +52,7 @@ Here's how to start:
   3. If you have any issues, it's probably our fault for not well documenting the setup. So please go to http://forum.mattermost.org and let us know that our instructions didn't work, and let us know which steps were the most unclear. 
 
 
-### Manual Install
+### Linux Web Server Install
 
 The following procedure shows how to install this project on a Linux-based web server. The following instructions work behind a firewall so long as the web server has access to your GitLab and Mattermost instances. 
 
