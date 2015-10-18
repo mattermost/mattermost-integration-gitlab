@@ -10,25 +10,27 @@ To run this integration you need:
 
 1. A web server supporting Python 2.6 or higher to run this software
 2. A [GitLab](https://about.gitlab.com/) account with a repository to which you have administrator access
-3. A [Mattermost](http://www.mattermost.org/) account [where incoming webhooks are enabled](https://github.com/mattermost/platform/blob/master/doc/integrations/webhooks/Incoming-Webhooks.md#enabling-incoming-webhooks).
+3. A [Mattermost](http://www.mattermost.org/) account [where incoming webhooks are enabled](https://github.com/mattermost/platform/blob/master/doc/integrations/webhooks/Incoming-Webhooks.md#enabling-incoming-webhooks)
 
-
+Regarding 1. there are many options for web servers you can use, below we provide instructions for both **Heroku** and a general **Linux/Ubuntu** server to get something running:  
 
 ### Quick Install with Heroku
 
-If you don't already have a Heroku account please go create one [here](https://www.heroku.com/) (it's free!).
+To install this project using Heroku, you will need: 
 
-1. Deploy integration to Heroku
- 1. Fork the [mattermost-integration-gitlab](https://github.com/mattermost/mattermost-integration-gitlab) repository on GitHub by clicking _Fork_ in the top-right and selecting your account if it asks.
- 1. Log in to [Heroku](https://www.heroku.com/) and go to your [dashboard](https://dashboard.heroku.com/apps).
- 2. Click the `+` in the top-right corner to add a new _app_.
- 3. Give your app a name and select your region, then click _Create App_.
- 4. On the _Deploy_ screen, select _GitHub_ at the top.
- 5. Use _Connect to GitHub_ to authorize Herkou to access your GitHub account.
- 6. Select your account and type `gitlab-mattermost` into the _repo-name_ field, then click _Search_.
- 7. Click the _Connect_ button next to your repository.
- 8. Scroll to the bottom of the new page and under the _Manual deploy_ section click _Deploy Branch_, making sure the `master` branch is selected.
- 9. Go to the _Settings_ tab and under the _Domains_ section copy the _Heroku Domain_.
+1. A Heroku account, available for free from [Heroku.com](http://heroku.com)
+2. A GitHub account, available for free from [GitHub.com](http://github.com) 
+
+Here's how to start: 
+
+1. Fork this project using your GitHub account by clicking **Fork** in the top-right corner. 
+  2. This creates a copy for you to control and update as you like. 
+2. Deploy this project to Heroku
+  1. Go to your [**Heroku Dashboard**](https://dashboard.heroku.com/apps) and click **+** in the top-right corner then **New App**. Give your app a name (like "Mattermost GitLab Integration"), select your region and click **Create App**.
+  2. On the **Deploy** screen, select **GitHub** at the top, then click **Connect to GitHub** to authorize Herkou to access your GitHub account.
+  3. Select your account and type `gitlab-mattermost` into the **repo-name** field, then click **Search** then the **Connect** button next to your repository.
+  4. Scroll to the bottom of the new page and under the **Manual Deploy** section click **Deploy Branch**, making sure the `master` branch is selected.
+  5. Go to **Domains** > **Settings** and copy **Heroku Domain**.
 
 2. Set up your GitLab outgoing webhook
  1. Log in to your GitLab account, and go to the project you want events pushed from.
