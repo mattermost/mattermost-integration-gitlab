@@ -26,11 +26,11 @@ Here's how to start:
 1. **Create a copy of this project to manipulate**
   1. From the [Github repository of this project](https://github.com/mattermost/mattermost-integration-gitlab/edit/it-edits/README.md) click **Fork** in the top-right corner to create a copy of this project that you control and can update as you like. 
 2. **Deploy your project copy to Heroku**
-  1. Go to your [**Heroku Dashboard**](https://dashboard.heroku.com/apps) and click **+** in the top-right corner then **New App**. Give your app a name (like "integration-example"), select your region and click **Create App**.
+  1. Go to your [**Heroku Dashboard**](https://dashboard.heroku.com/apps) and click **+** in the top-right corner then **New App**. Give your app a unqiue name (like `mattermost-[YOUR_GITHUB_USERNAME]`), select your region and click **Create App**.
   2. On the **Deploy** screen, select **GitHub** at the top, then click **Connect to GitHub** to authorize Herkou to access your GitHub account.
-  3. Select your account and type `mattermost-integration-gitlab` into the **repo-name** field, then click **Search** then the **Connect** button next to your repository.
+  3. Select your account and search for your repo name, for example `mattermost-[YOUR_GITHUB_USERNAME]`, in the **repo-name** field, then click **Search** then the **Connect** button next to your repository.
   4. Scroll to the bottom of the new page and under the **Manual Deploy** section click **Deploy Branch**, making sure the `master` branch is selected.
-  5. Go to **Domains** > **Settings** and copy **Heroku Domain** (we'll refer to this as `http://<your-heroku-domain>/` and we'll need it in the next step)
+  5. Go to **Settings** > **Domains** > **Settings** and copy the URL below **Heroku Domain** (we'll refer to this as `http://<your-heroku-domain>/` and we'll need it in the next step)
   6. Leave your Heroku interface open as we'll come back to it to finish the setup. 
 
 3. **Connect your project to your GitLab account for outgoing webhooks**
@@ -44,7 +44,7 @@ Here's how to start:
  1. Log in to your Mattermost account, and from three dot icon at the top of the left-hand menu go to **Account Settings** > **Integrations** > **Incoming Webhooks** > **Edit**.
  2. Under **Add a new incoming webhook** select the channel in which you want GitLab notifications to appear, then click **Add**, which should create a new entry below.
  3. From the new entry below, copy the contents next to **URL** (we'll refer to this as `https://<your-mattermost-webhook-URL>` and add it to your Heroku server).
- 4. Go to your Heroku app page and to **Settings** > **Config Variables** > **Reveal Config Vars** and for **MATTERMOST_WEBHOOK_URL** > **KEY** > **VALUE** paste `https://<your-mattermost-webhook-URL>` then click **Add**.
+ 4. Go to your Heroku app page and to **Settings** > **Config Variables** > **Reveal Config Vars** and for **KEY** enter **MATTERMOST_WEBHOOK_URL** then for **VALUE** paste `https://<your-mattermost-webhook-URL>` and click **Add**.
 
 5. **Test that everything is working**
   1. If your GitLab project is in active development, return to the webhooks page of your GitLab project and click **Test Hook** to send a test message about one of your recent updates from your GitLab project to Mattermost. 
