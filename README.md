@@ -45,7 +45,7 @@ Here's how to start:
  2. Under **Add a new incoming webhook** select the channel in which you want GitLab notifications to appear, then click **Add**, which should create a new entry below.
  3. From the new entry below, copy the contents next to **URL** (we'll refer to this as `https://<your-mattermost-webhook-URL>` and add it to your Heroku server).
  4. Go to your Heroku app page and to **Settings** > **Config Variables** > **Reveal Config Vars**
-     1. Add **MATTERMOST_WEBHOOK_URL** in the **KEY** field and paste `https://<your-mattermost-webhook-URL>` into **VALUE** and alick **Add**
+     1. Add **MATTERMOST_WEBHOOK_URL** in the **KEY** field and paste `https://<your-mattermost-webhook-URL>` into **VALUE** and click **Add**
      2. In the second **KEY** field add **PUSH_TRIGGER** and in the corresponding **VALUE** field add **True**.
 5. **Test that everything is working**
   1. If your GitLab project is in active development, return to the webhooks page of your GitLab project and click **Test Hook** to send a test message about one of your recent updates from your GitLab project to Mattermost
