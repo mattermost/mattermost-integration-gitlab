@@ -12,7 +12,7 @@ To run this integration you need:
 2. A **[GitLab account](https://about.gitlab.com/)** with a repository to which you have administrator access
 3. A **[Mattermost account](http://www.mattermost.org/)** [where incoming webhooks are enabled](https://github.com/mattermost/platform/blob/master/doc/integrations/webhooks/Incoming-Webhooks.md#enabling-incoming-webhooks)
 
-Regarding 1. there are many options for web servers you can use, below we provide instructions for both [**Heroku**](README.md#heroku-based-install) and a general [**Linux/Ubuntu**](README.md#linuxubuntu-1404-web-server-install) server to get something running:  
+Regarding 1. there are many options for web servers you can use, below we provide instructions for both [**Heroku**](README.md#heroku-based-install) and a general [**Linux/Ubuntu**](README.md#linuxubuntu-1404-web-server-install) server to get something running:
 
 ### Heroku-based Install
 
@@ -35,7 +35,7 @@ Here's how to start:
 
 3. **Connect your project to your GitLab account for outgoing webhooks**
  1. Log in to GitLab account and to the project from which you want to receive updates and to which you have administrator access. From the left side of the project screen, click on **Settings** > **Web Hooks** and in the **URL** field enter `http://<your-heroku-domain>/` from the previous step, plus the word `**new_event**` to create an entry that reads **`http://<your-heroku-domain>/new_event`** so events from your GitLab project are sent to your Heroku server.
- 2. From the same page, under **Trigger** select **Comment events**, **Issue events**, **Merge Request events**
+ 2. From the same page, under **Trigger** select **Push events**, **Comment events**, **Issue events**, **Merge Request events**
  3. (Recommended but optional): Encrypt your connection from GitLab to your project by selecting **Enable SSL verification**. If this option is not available and you're not familiar with how to set it up, contact your GitLab System Administrator for help.
  3. Click **Add Web Hook** to check that a new entry about your webhook is added to the **Web hooks** section below the button.
  4. Leave this page open as we'll come back to it to test that everything is working.
@@ -44,12 +44,14 @@ Here's how to start:
  1. Log in to your Mattermost account, and from three dot icon at the top of the left-hand menu go to **Account Settings** > **Integrations** > **Incoming Webhooks** > **Edit**.
  2. Under **Add a new incoming webhook** select the channel in which you want GitLab notifications to appear, then click **Add**, which should create a new entry below.
  3. From the new entry below, copy the contents next to **URL** (we'll refer to this as `https://<your-mattermost-webhook-URL>` and add it to your Heroku server).
- 4. Go to your Heroku app page and to **Settings** > **Config Variables** > **Reveal Config Vars** and for **KEY** enter **MATTERMOST_WEBHOOK_URL** then for **VALUE** paste `https://<your-mattermost-webhook-URL>` and click **Add**.
-
+ 4. Go to your Heroku app page and to **Settings** > **Config Variables** > **Reveal Config Vars**
+     1. Add **MATTERMOST_WEBHOOK_URL** in the **KEY** field and paste `https://<your-mattermost-webhook-URL>` into **VALUE** and alick **Add**
+     2. In the second **KEY** field add **PUSH_TRIGGER** and in the corresponding **VALUE** field add **True**.
 5. **Test that everything is working**
-  1. Try creating an issue as a test, and check that the new issue is posted to Mattermost
-  2. Don't use GitLab's **Test Hook** button to try to test the integration. That button will always send **Push events** as the test and the integration ignores those events since they're spammy.
-  3. If you have any issues, it's probably our fault for not well documenting the setup. So please go to http://forum.mattermost.org and let us know that our instructions didn't work, and let us know which steps were the most unclear.
+  1. If your GitLab project is in active development, return to the webhooks page of your GitLab project and click **Test Hook** to send a test message about one of your recent updates from your GitLab project to Mattermost
+  2. If your GitLab project is not active, if it's brand new for example, try creating an issue as a test, and check that the new issues is posted to Mattermost
+  3. Back on the settings page of your Heroku app, under the **Config Variables**, click **Reveal Config Vars** and then click the `X` next to the **PUSH_TRIGGER** field you added. This was used for testing only, and is better left turned off for production
+  4. If you have any issues, it's probably our fault for not well documenting the setup. So please go to http://forum.mattermost.org and let us know that our instructions didn't work, and let us know which steps were the most unclear.
 
 
 ### Linux/Ubuntu 14.04 Web Server Install
@@ -90,11 +92,12 @@ Here's how to start:
 
 3. **Connect your project to your GitLab account for outgoing webhooks**
  1. Log in to GitLab account and to the project from which you want to receive updates and to which you have administrator access. From the left side of the project screen, click on **Settings** > **Web Hooks** and in the **URL** field enter `http://<your-web-server-domain>/` from the previous step, plus the word `**new_event**` to create an entry that reads **`http://<your-web-server-domain>/new_event`** so events from your GitLab project are sent to your web server.
- 2. From the same page, under **Trigger** select **Comment events**, **Issue events**, **Merge Request events**
+ 2. From the same page, under **Trigger** select **Push events**, **Comment events**, **Issue events**, **Merge Request events**
  3. (Recommended but optional): Encrypt your connection from GitLab to your project by selecting **Enable SSL verification**. If this option is not available and you're not familiar with how to set it up, contact your GitLab System Administrator for help.
  3. Click **Add Web Hook** to check that a new entry about your webhook is added to the **Web hooks** section below the button.
 
 4. **Test that everything is working**
-  1. Try creating an issue as a test, and check that the new issue is posted to Mattermost
-  2. Don't use GitLab's **Test Hook** button to try to test the integration. That button will always send **Push events** as the test and the integration ignores those events since they're spammy.
-  3. If you have any issues, it's probably our fault for not well documenting the setup. So please go to http://forum.mattermost.org and let us know that our instructions didn't work, and let us know which steps were the most unclear.
+  1. If your GitLab project is in active development, return to the webhooks page of your GitLab project and click **Test Hook** to send a test message about one of your recent updates from your GitLab project to Mattermost
+  2. If your GitLab project is not active, if it's brand new for example, try creating an issue as a test, and check that the new issues is posted to Mattermost
+  3. Back on the settings page of your Heroku app, under the **Config Variables**, click **Reveal Config Vars** and then click the `X` next to the **PUSH_TRIGGER** field you added. This was used for testing only, and is better left turned off for production
+  4. If you have any issues, it's probably our fault for not well documenting the setup. So please go to http://forum.mattermost.org and let us know that our instructions didn't work, and let us know which steps were the most unclear.
