@@ -84,6 +84,7 @@ Here's how to start:
     - `sudo pip -r requirements.txt`
  7. Add the following lines to your `~/.bash_profile`
     - `export MATTERMOST_WEBHOOK_URL=https://<your-mattermost-webhook-URL>` This is the URL you copied in the last section
+    - `export PUSH_TRIGGER=True` This is the URL you copied in the last section
     - `export PORT=<your-port-number>` The port number you want the integration to listen on (defaults to 5000)
  8. Source your bash profile
     - `source ~/.bash_profile`
@@ -99,5 +100,5 @@ Here's how to start:
 4. **Test that everything is working**
   1. If your GitLab project is in active development, return to the webhooks page of your GitLab project and click **Test Hook** to send a test message about one of your recent updates from your GitLab project to Mattermost
   2. If your GitLab project is not active, if it's brand new for example, try creating an issue as a test, and check that the new issues is posted to Mattermost
-  3. Back on the settings page of your Heroku app, under the **Config Variables**, click **Reveal Config Vars** and then click the `X` next to the **PUSH_TRIGGER** field you added. This was used for testing only, and is better left turned off for production
+  3. Remove the `export PUSH_TRIGGER=True` line from your `~/.bash_profile` and source it again `source ~/.bash_profile`. This was used for testing only, and is better left turned off for production
   4. If you have any issues, it's probably our fault for not well documenting the setup. So please go to http://forum.mattermost.org and let us know that our instructions didn't work, and let us know which steps were the most unclear.
