@@ -91,7 +91,7 @@ Here's how to start:
 3. **Connect your project to your GitLab account for outgoing webhooks**
  1. Log in to GitLab account and to the project from which you want to receive updates and to which you have administrator access. From the left side of the project screen, click on **Settings** > **Web Hooks** and in the **URL** field enter `http://<your-web-server-domain>/` from the previous step, plus the word `**new_event**` to create an entry that reads **`http://<your-web-server-domain>/new_event`** so events from your GitLab project are sent to your web server. 
  2. From the same page, under **Trigger** select **Comment events**, **Issue events**, **Merge Request events** 
- 3. (Recommended by optional): Encrypt your connection from GitLab to your project by selecting **Enable SSL verification**. If this option is not available and you're not familiar with how to set it up, contact your GitLab System Administrator for help. 
+ 3. (Recommended but optional): Encrypt your connection from GitLab to your project by selecting **Enable SSL verification**. If this option is not available and you're not familiar with how to set it up, contact your GitLab System Administrator for help. 
  3. Click **Add Web Hook** to check that a new entry about your webhook is added to the **Web hooks** section below the button. 
  
 4. **Test that everything is working**
