@@ -191,6 +191,12 @@ if __name__ == "__main__":
     USERNAME = os.environ.get('USERNAME', USERNAME)
     ICON_URL = os.environ.get('ICON_URL', ICON_URL)
 
+    REPORT_EVENTS[PUSH_EVENT] = os.environ.get('PUSH_TRIGGER', REPORT_EVENTS[PUSH_EVENT])
+    REPORT_EVENTS[ISSUE_EVENT] = os.environ.get('ISSUE_TRIGGER', REPORT_EVENTS[ISSUE_EVENT])
+    REPORT_EVENTS[TAG_EVENT] = os.environ.get('TAG_TRIGGER', REPORT_EVENTS[TAG_EVENT])
+    REPORT_EVENTS[COMMENT_EVENT] = os.environ.get('COMMENT_TRIGGER', REPORT_EVENTS[COMMENT_EVENT])
+    REPORT_EVENTS[MERGE_EVENT] = os.environ.get('MERGE_TRIGGER', REPORT_EVENTS[MERGE_EVENT])
+
     if len(MATTERMOST_WEBHOOK_URL) == 0:
         print 'MATTERMOST_WEBHOOK_URL must be configured. Please see instructions in README.md'
         sys.exit()
