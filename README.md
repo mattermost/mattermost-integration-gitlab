@@ -8,10 +8,11 @@ Mattermost community members are invited to fork this repo to create new integra
 
 To run this integration you need:
 
-1. A **web server** supporting Python 2.7 or a compatible version to run this software. There are many options for web servers you can use, below we provide instructions for [**Heroku**](README.md#heroku-based-install) and a general [**Linux/Ubuntu**](README.md#linuxubuntu-1404-web-server-install) server.
+1. A **web server** running **Ubuntu 14.04** and **Python 2.7** or compatible versions. 
 2. A **[GitLab account](https://about.gitlab.com/)** with a repository to which you have administrator access
-3. A **[Mattermost account](http://www.mattermost.org/)** [where incoming webhooks are enabled](https://github.com/mattermost/platform/blob/master/doc/integrations/webhooks/Incoming-Webhooks.md#enabling-incoming-webhooks)
+3. A **[Mattermost account](http://www.mattermost.org/)** where [incoming webhooks are enabled](https://github.com/mattermost/platform/blob/master/doc/integrations/webhooks/Incoming-Webhooks.md#enabling-incoming-webhooks)
 
+Many web server options will work, below we provide instructions for [**Heroku**](README.md#heroku-based-install) and a general [**Linux/Ubuntu**](README.md#linuxubuntu-1404-web-server-install) server.
 ### Heroku-based Install
 
 To install this project using Heroku, you will need: 
