@@ -49,6 +49,7 @@ def new_event():
     object_kind = data['object_kind']
 
     text = ''
+    base_url = ''
 
     if REPORT_EVENTS[PUSH_EVENT] and  object_kind == PUSH_EVENT:
         text = '%s pushed %d commit(s) into the `%s` branch for project [%s](%s).' % (
@@ -64,17 +65,20 @@ def new_event():
         if action == 'open' or action == 'reopen':
             description = add_markdown_quotes(data['object_attributes']['description'])
 
-            text = '#### [#%s - %s](%s)\n_[Issue](%s/issues) created by %s in [%s](%s) on %s_\n %s' % (
-                data['object_attributes']['iid'],
+            text = '#### [%s](%s)\n_[Issue #%s](%s/issues) created by %s in [%s](%s) on [%s](%s)_\n %s' % (
                 data['object_attributes']['title'],
                 data['object_attributes']['url'],
+                data['object_attributes']['iid'],
                 data['repository']['homepage'],
                 data['user']['username'],
                 data['repository']['name'],
                 data['repository']['homepage'],
                 data['object_attributes']['created_at'],
+                data['object_attributes']['url'],
                 description
             )
+
+            base_url = data['repository']['homepage']
     elif REPORT_EVENTS[TAG_EVENT] and object_kind == TAG_EVENT:
         text = '%s pushed tag `%s` to the project [%s](%s).' % (
             data['user_name'],
@@ -112,7 +116,7 @@ def new_event():
 
         description = add_markdown_quotes(data['object_attributes']['note'])
 
-        text = '#### **New Comment** on [%s](%s)\n_[%s](https://gitlab.com/u/%s) commented on %s %s in [%s](%s) on %s_\n %s' % (
+        text = '#### **New Comment** on [%s](%s)\n_[%s](https://gitlab.com/u/%s) commented on %s %s in [%s](%s) on [%s](%s)_\n %s' % (
             subtitle,
             data['object_attributes']['url'],
             data['user']['username'],
@@ -122,15 +126,18 @@ def new_event():
             data['repository']['name'],
             data['repository']['homepage'],
             data['object_attributes']['created_at'],
+            data['object_attributes']['url'],
             description
         )
+
+        base_url = data['repository']['homepage']
     elif REPORT_EVENTS[MERGE_EVENT] and object_kind == MERGE_EVENT:
         action = data['object_attributes']['action']
 
         if action == 'open' or action == 'reopen':
             description = add_markdown_quotes(data['object_attributes']['description'])
 
-            text = '#### [!%s - %s](%s)\n*[%s](https://gitlab.com/u/%s) created a merge request in [%s](%s) on %s*\n %s' % (
+            text = '#### [!%s - %s](%s)\n*[%s](https://gitlab.com/u/%s) created a merge request in [%s](%s) on [%s](%s)*\n %s' % (
                 data['object_attributes']['iid'],
                 data['object_attributes']['title'],
                 data['object_attributes']['url'],
@@ -139,14 +146,18 @@ def new_event():
                 data['object_attributes']['target']['name'],
                 data['object_attributes']['target']['web_url'],
                 data['object_attributes']['created_at'],
+                data['object_attributes']['url'],
                 description
             )
+
+            base_url = data['object_attributes']['target']['web_url']
 
     if len(text) == 0:
         print 'Text was empty so nothing sent to Mattermost, object_kind=%s' % object_kind
         return 'OK'
 
-    text = fix_gitlab_links(data['repository']['homepage'], text)
+    if len(base_url) != 0:
+        text = fix_gitlab_links(base_url, text)
 
     post_text(text)
 
