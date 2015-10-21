@@ -177,15 +177,11 @@ def fix_gitlab_links(base_url, text):
     Fixes gitlab upload links that are relative and makes them absolute
     """
 
-    print text
-
     matches = re.findall('(\[[^]]*\]\s*\((/[^)]+)\))', text)
 
     for (replace_string, link) in matches:
         new_string = replace_string.replace(link, base_url + link)
         text = text.replace(replace_string, new_string)
-
-    print text
 
     return text
 
@@ -221,5 +217,4 @@ if __name__ == "__main__":
         sys.exit()
 
     port = int(os.environ.get('PORT', 5000))
-    app.debug = True
     app.run(host='0.0.0.0', port=port)
