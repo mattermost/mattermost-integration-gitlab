@@ -2,7 +2,7 @@ import os
 import sys
 import requests
 import json
-import time
+import re
 from flask import Flask
 from flask import request
 
@@ -146,6 +146,8 @@ def new_event():
         print 'Text was empty so nothing sent to Mattermost, object_kind=%s' % object_kind
         return 'OK'
 
+    text = fix_gitlab_links(data['repository']['homepage'], text)
+
     post_text(text)
 
     return 'OK'
@@ -168,7 +170,24 @@ def post_text(text):
     r = requests.post(MATTERMOST_WEBHOOK_URL, headers=headers, data=json.dumps(data))
 
     if r.status_code is not requests.codes.ok:
-        print 'Encountered error posting to Mattermost URL %s, status=%d, response_body=%s' % (MATTERMOST_WEBHOOK_URL, r.status_code, r.json)
+        print 'Encountered error posting to Mattermost URL %s, status=%d, response_body=%s' % (MATTERMOST_WEBHOOK_URL, r.status_code, r.json())
+
+def fix_gitlab_links(base_url, text):
+    """
+    Fixes gitlab upload links that are relative and makes them absolute
+    """
+
+    print text
+
+    matches = re.findall('(\[[^]]*\]\s*\((/[^)]+)\))', text)
+
+    for (replace_string, link) in matches:
+        new_string = replace_string.replace(link, base_url + link)
+        text = text.replace(replace_string, new_string)
+
+    print text
+
+    return text
 
 def add_markdown_quotes(text):
     """
@@ -202,4 +221,5 @@ if __name__ == "__main__":
         sys.exit()
 
     port = int(os.environ.get('PORT', 5000))
+    app.debug = True
     app.run(host='0.0.0.0', port=port)
