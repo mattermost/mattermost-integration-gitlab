@@ -78,7 +78,7 @@ Here's how to start:
     - `git clone https://github.com/mattermost/mattermost-integration-gitlab.git`
     - `cd mattermost-integration-gitlab`
  6. Install integration requirements:
-    - `sudo pip -r requirements.txt`
+    - `sudo pip install -r requirements.txt`
  7. Add the following lines to your `~/.bash_profile`:
     - `export MATTERMOST_WEBHOOK_URL=https://<your-mattermost-webhook-URL>` This is the URL you copied in the last section
     - `export PUSH_TRIGGER=True`
