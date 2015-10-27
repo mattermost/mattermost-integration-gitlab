@@ -134,23 +134,38 @@ def new_event():
     elif REPORT_EVENTS[MERGE_EVENT] and object_kind == MERGE_EVENT:
         action = data['object_attributes']['action']
 
-        if action == 'open' or action == 'reopen':
-            description = add_markdown_quotes(data['object_attributes']['description'])
+        if action == 'open':
+            text_action = 'created a'
+        elif action == 'reopen':
+            text_action = 'reopened a'
+        elif action == 'update':
+            text_action = 'updated a'
+        elif action == 'merge':
+            text_action = 'accepted a'
+        elif action == 'close':
+            text_action = 'closed a'
 
-            text = '#### [!%s - %s](%s)\n*[%s](https://gitlab.com/u/%s) created a merge request in [%s](%s) on [%s](%s)*\n %s' % (
-                data['object_attributes']['iid'],
-                data['object_attributes']['title'],
-                data['object_attributes']['url'],
-                data['user']['username'],
-                data['user']['username'],
-                data['object_attributes']['target']['name'],
-                data['object_attributes']['target']['web_url'],
-                data['object_attributes']['created_at'],
-                data['object_attributes']['url'],
+        text = '#### [!%s - %s](%s)\n*[%s](https://gitlab.com/u/%s) %s merge request in [%s](%s) on [%s](%s)*' % (
+            data['object_attributes']['iid'],
+            data['object_attributes']['title'],
+            data['object_attributes']['url'],
+            data['user']['username'],
+            data['user']['username'],
+            text_action,
+            data['object_attributes']['target']['name'],
+            data['object_attributes']['target']['web_url'],
+            data['object_attributes']['created_at'],
+            data['object_attributes']['url']
+        )
+
+        if action == 'open':
+            description = add_markdown_quotes(data['object_attributes']['description'])
+            text = '%s\n %s' % (
+                text,
                 description
             )
 
-            base_url = data['object_attributes']['target']['web_url']
+        base_url = data['object_attributes']['target']['web_url']
 
     if len(text) == 0:
         print 'Text was empty so nothing sent to Mattermost, object_kind=%s' % object_kind
