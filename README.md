@@ -6,7 +6,7 @@ This integrations service posts [issue](http://doc.gitlab.com/ee/web_hooks/web_h
 
 The goal of this project is to provide a fully-functional template on which the Mattermost community can create their own integration services. Community members are invited to fork this repo to add improvements and to create new integrations. 
 
-To have your work included on the [Mattermost integrations page](www.mattermost.org/community-applications/), please mail info@mattermost.com or tweet to [@MattermostHQ](https://twitter.com/mattermosthq). 
+To have your work included on the [Mattermost integrations page](http://www.mattermost.org/community-applications/), please mail info@mattermost.com or tweet to [@MattermostHQ](https://twitter.com/mattermosthq). 
 
 ## Requirements
 
