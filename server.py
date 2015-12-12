@@ -175,11 +175,156 @@ def new_event():
     if len(base_url) != 0:
         text = fix_gitlab_links(base_url, text)
 
-    post_text(text)
+    post_text(text, MATTERMOST_WEBHOOK_URL)
 
     return 'OK'
 
-def post_text(text):
+@app.route('/new_event_hook/<use_this_hook>', methods=['POST'])
+def new_event_hook(use_this_hook):
+    """
+    GitLab event handler, handles POST events from a GitLab project
+    """
+
+    if request.json is None:
+        print 'Invalid Content-Type'
+        return 'Content-Type must be application/json and the request body must contain valid JSON', 400
+
+    data = request.json
+    object_kind = data['object_kind']
+
+    text = ''
+    base_url = ''
+
+    if REPORT_EVENTS[PUSH_EVENT] and  object_kind == PUSH_EVENT:
+        text = '%s pushed %d commit(s) into the `%s` branch for project [%s](%s).' % (
+            data['user_name'],
+            data['total_commits_count'],
+            data['ref'],
+            data['repository']['name'],
+            data['repository']['homepage']
+        )
+    elif REPORT_EVENTS[ISSUE_EVENT] and object_kind == ISSUE_EVENT:
+        action = data['object_attributes']['action']
+
+        if action == 'open' or action == 'reopen':
+            description = add_markdown_quotes(data['object_attributes']['description'])
+
+            text = '#### [%s](%s)\n*[Issue #%s](%s/issues) created by %s in [%s](%s) on [%s](%s)*\n %s' % (
+                data['object_attributes']['title'],
+                data['object_attributes']['url'],
+                data['object_attributes']['iid'],
+                data['repository']['homepage'],
+                data['user']['username'],
+                data['repository']['name'],
+                data['repository']['homepage'],
+                data['object_attributes']['created_at'],
+                data['object_attributes']['url'],
+                description
+            )
+
+            base_url = data['repository']['homepage']
+    elif REPORT_EVENTS[TAG_EVENT] and object_kind == TAG_EVENT:
+        text = '%s pushed tag `%s` to the project [%s](%s).' % (
+            data['user_name'],
+            data['ref'],
+            data['repository']['name'],
+            data['repository']['homepage']
+        )
+    elif REPORT_EVENTS[COMMENT_EVENT] and object_kind == COMMENT_EVENT:
+        symbol = ''
+        type_grammar = 'a'
+        note_type = data['object_attributes']['noteable_type'].lower()
+        note_id = ''
+        parent_title = ''
+
+        if note_type == 'mergerequest':
+            symbol = '!'
+            note_id = data['merge_request']['iid']
+            parent_title = data['merge_request']['title']
+            note_type = 'merge request'
+        elif note_type == 'snippet':
+            symbol = '$'
+            note_id = data['snippet']['iid']
+            parent_title = data['snippet']['title']
+        elif note_type == 'issue':
+            symbol = '#'
+            note_id = data['issue']['iid']
+            parent_title = data['issue']['title']
+            type_grammar = 'an'
+
+        subtitle = ''
+        if note_type == 'commit':
+            subtitle = '%s' % data['commit']['id']
+        else:
+            subtitle = '%s%s - %s' % (symbol, note_id, parent_title)
+
+        description = add_markdown_quotes(data['object_attributes']['note'])
+
+        text = '#### **New Comment** on [%s](%s)\n*[%s](https://gitlab.com/u/%s) commented on %s %s in [%s](%s) on [%s](%s)*\n %s' % (
+            subtitle,
+            data['object_attributes']['url'],
+            data['user']['username'],
+            data['user']['username'],
+            type_grammar,
+            note_type,
+            data['repository']['name'],
+            data['repository']['homepage'],
+            data['object_attributes']['created_at'],
+            data['object_attributes']['url'],
+            description
+        )
+
+        base_url = data['repository']['homepage']
+    elif REPORT_EVENTS[MERGE_EVENT] and object_kind == MERGE_EVENT:
+        action = data['object_attributes']['action']
+
+        if action == 'open':
+            text_action = 'created a'
+        elif action == 'reopen':
+            text_action = 'reopened a'
+        elif action == 'update':
+            text_action = 'updated a'
+        elif action == 'merge':
+            text_action = 'accepted a'
+        elif action == 'close':
+            text_action = 'closed a'
+
+        text = '#### [!%s - %s](%s)\n*[%s](https://gitlab.com/u/%s) %s merge request in [%s](%s) on [%s](%s)*' % (
+            data['object_attributes']['iid'],
+            data['object_attributes']['title'],
+            data['object_attributes']['url'],
+            data['user']['username'],
+            data['user']['username'],
+            text_action,
+            data['object_attributes']['target']['name'],
+            data['object_attributes']['target']['web_url'],
+            data['object_attributes']['created_at'],
+            data['object_attributes']['url']
+        )
+
+        if action == 'open':
+            description = add_markdown_quotes(data['object_attributes']['description'])
+            text = '%s\n %s' % (
+                text,
+                description
+            )
+
+        base_url = data['object_attributes']['target']['web_url']
+
+    if len(text) == 0:
+        print 'Text was empty so nothing sent to Mattermost, object_kind=%s' % object_kind
+        return 'OK'
+
+    if len(base_url) != 0:
+        text = fix_gitlab_links(base_url, text)
+
+    url_to_use = MATTERMOST_WEBHOOK_URL[0:MATTERMOST_WEBHOOK_URL.find("/hooks/")+7] + use_this_hook
+
+    post_text(text, url_to_use)
+
+    return 'OK'
+
+def post_text(text, url_to_use):
     """
     Mattermost POST method, posts text to the Mattermost incoming webhook URL
     """
@@ -195,9 +340,9 @@ def post_text(text):
 
     headers = {'Content-Type': 'application/json'}
     if SSL_VERIFY:
-        r = requests.post(MATTERMOST_WEBHOOK_URL, headers=headers, data=json.dumps(data))
+        r = requests.post(url_to_use, headers=headers, data=json.dumps(data))
     else:
-        r = requests.post(MATTERMOST_WEBHOOK_URL, headers=headers, data=json.dumps(data), verify=False)
+        r = requests.post(url_to_use, headers=headers, data=json.dumps(data), verify=False)
 
     if r.status_code is not requests.codes.ok:
         print 'Encountered error posting to Mattermost URL %s, status=%d, response_body=%s' % (MATTERMOST_WEBHOOK_URL, r.status_code, r.json())
