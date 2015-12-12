@@ -16,7 +16,7 @@ To run this integration you need:
 2. A **[GitLab account](https://about.gitlab.com/)** with a repository to which you have administrator access
 3. A **[Mattermost account](http://www.mattermost.org/)** where [incoming webhooks are enabled](https://github.com/mattermost/platform/blob/master/doc/integrations/webhooks/Incoming-Webhooks.md#enabling-incoming-webhooks)
 
-Many web server options will work, below we provide instructions for [**Heroku**](README.md#heroku-based-install) and a general [**Linux/Ubuntu**](README.md#linuxubuntu-1404-web-server-install) server.
+Many web server options will work, below we provide instructions for [**Heroku**](README.md#heroku-based-install) and a general [**Linux/Ubuntu**](README.md#linuxubuntu-1404-web-server-install) server. **Added a Dockerfile and instructions**
 ### Heroku-based Install
 
 To install this project using Heroku, you will need: 
@@ -103,4 +103,43 @@ Here's how to start:
   1. If your GitLab project is in active development, return to the **Settings** > **Web Hooks** page of your GitLab project and click **Test Hook** to send a test message about one of your recent updates from your GitLab project to Mattermost. You should see a notification on the Gitlab page that the hook was successfully executed. In Mattermost, go to the channel which you specified when creating the URL for your incoming webhook and make sure that the message delivered successfully.
   2. If your GitLab project is new, try creating a test issue and then verify that the issue is posted to Mattermost.
   3. Remove the `export PUSH_TRIGGER=True` line from your `~/.bash_profile` and source it again `source ~/.bash_profile`. This was used for testing only, and is better left turned off for production
+  4. If you have any issues, please go to http://forum.mattermost.org and let us know which steps in these instructions were unclear or didn't work.
+
+### Docker Instructions
+This is primarily for use with a Docker instance of Gitlab (Mattermost may or may not be in the same container).
+
+1. **Set up your Mattermost instance to receive incoming webhooks**
+ 1. Log in to your Mattermost account. Click the three dot menu at the top of the left-hand side and go to **Account Settings** > **Integrations** > **Incoming Webhooks**.
+ 2. Under **Add a new incoming webhook** select the channel in which you want GitLab notifications to appear, then click **Add** to create a new entry.
+ 3. Copy the contents next to **URL** of the new webhook you just created (we'll refer to this as `https://<your-mattermost-webhook-URL>`).
+
+2. **Clone this project to your docker server and build it**
+ There are some variations you can do... you can also build this, send it to your docker hub and pull the image from your docker server.
+ 1. Clone this GitHub repo:
+    - `git clone https://github.com/mattermost/mattermost-integration-gitlab.git`
+    - `cd mattermost-integration-gitlab` 
+ 2. Build the container
+    - `docker build -t mattermost-integration-gitlab .`
+ 3. Run the docker image
+    - `docker run -e "MATTERMOST_WEBHOOK_URL=https://<your-mattermost-webhook-URL>" -e "PUSH_TRIGGER=True" --name mattermost-integration-gitlab -e "SSL_VERIFY=False" -d mattermost-integration-gitlab`
+    - The SSL_VERIFY environment variable is optional, it defaults to True
+    - Alternately you could publish port 5000 and connect through other means
+ 4. Modify your gitlab docker run command and re-run it
+    - Add `--link mattermost-integration-gitlab:mattermost-integration-gitlab`
+
+3. **Connect your project to your GitLab account for outgoing webhooks**
+ 1. Log in to GitLab account and open the project from which you want to receive updates and to which you have administrator access. From the left side of the project screen, click on **Settings** > **Web Hooks**. In the **URL** field enter `http://mattermost-integration-gitlab/new_event`
+ 2. On the same page, under **Trigger** select **Push events**, **Comment events**, **Issue events**, **Merge Request events**
+ 3. Uncheck **Enable SSL verification**.  SSL Verification is not necessary since the containers are linked and mattermost-integration-gitlab container is not publishing the port.
+ 4. Click **Add Web Hook** and check that your new webhook entry is added to the **Web hooks** section below the button.
+ 5. Leave this page open as we'll come back to it to test that everything is working.
+
+4. **Test your webhook integration**
+  1. If your GitLab project is in active development, return to the **Settings** > **Web Hooks** page of your GitLab project and click **Test Hook** to send a test message about one of your recent updates from your GitLab project to Mattermost. You should see a notification on the Gitlab page that the hook was successfully executed. In Mattermost, go to the channel which you specified when creating the URL for your incoming webhook and make sure that the message delivered successfully.
+  2. If your GitLab project is new, try creating a test issue and then verify that the issue is posted to Mattermost.
+  3. If your configuration works, you can re-run the integration container (step 2.3) without the `-e "PUSH_TRIGGER=True"`.  This was used for testing only, and is better left turned off for production.
+      - `docker stop mattermost-integration-gitlab`
+      - `docker rm mattermost-integration-gitlab`
+      - `docker run -e "MATTERMOST_WEBHOOK_URL=https://<your-mattermost-webhook-URL>" --name mattermost-integration-gitlab -e "SSL_VERIFY=False" -d mattermost-integration-gitlab`
+      - Remove and re-run your gitlab container (not sure if this is avoidable, only way I could get it to work)
   4. If you have any issues, please go to http://forum.mattermost.org and let us know which steps in these instructions were unclear or didn't work.
