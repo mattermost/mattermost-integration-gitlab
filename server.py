@@ -8,10 +8,13 @@ from flask import request
 
 app = Flask(__name__)
 
+app.debug = True
+
 USERNAME = 'gitlab'
 ICON_URL = 'https://gitlab.com/uploads/project/avatar/13083/gitlab-logo-square.png'
 MATTERMOST_WEBHOOK_URL = '' # Paste the Mattermost webhook URL you created here
 CHANNEL = '' # Leave this blank to post to the default channel of your webhook
+SSL_VERIFY = True
 
 PUSH_EVENT = 'push'
 ISSUE_EVENT = 'issue'
@@ -193,7 +196,10 @@ def post_text(text):
         data['channel'] = CHANNEL
 
     headers = {'Content-Type': 'application/json'}
-    r = requests.post(MATTERMOST_WEBHOOK_URL, headers=headers, data=json.dumps(data))
+    if SSL_VERIFY:
+        r = requests.post(MATTERMOST_WEBHOOK_URL, headers=headers, data=json.dumps(data))
+    else:
+        r = requests.post(MATTERMOST_WEBHOOK_URL, headers=headers, data=json.dumps(data), verify=False)
 
     if r.status_code is not requests.codes.ok:
         print 'Encountered error posting to Mattermost URL %s, status=%d, response_body=%s' % (MATTERMOST_WEBHOOK_URL, r.status_code, r.json())
@@ -231,6 +237,7 @@ if __name__ == "__main__":
     CHANNEL = os.environ.get('CHANNEL', CHANNEL)
     USERNAME = os.environ.get('USERNAME', USERNAME)
     ICON_URL = os.environ.get('ICON_URL', ICON_URL)
+    SSL_VERIFY = os.environ.get('SSL_VERIFY', 'True') == 'True'
 
     REPORT_EVENTS[PUSH_EVENT] = os.environ.get('PUSH_TRIGGER', str(REPORT_EVENTS[PUSH_EVENT])) == 'True'
     REPORT_EVENTS[ISSUE_EVENT] = os.environ.get('ISSUE_TRIGGER', str(REPORT_EVENTS[ISSUE_EVENT])) == 'True'
