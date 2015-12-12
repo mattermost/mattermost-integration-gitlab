@@ -128,7 +128,7 @@ This is primarily for use with a Docker instance of Gitlab (Mattermost may or ma
     - Add `--link mattermost-integration-gitlab:mattermost-integration-gitlab`
 
 3. **Connect your project to your GitLab account for outgoing webhooks**
- 1. Log in to GitLab account and open the project from which you want to receive updates and to which you have administrator access. From the left side of the project screen, click on **Settings** > **Web Hooks**. In the **URL** field enter `http://mattermost-integration-gitlab/new_event`
+ 1. Log in to GitLab account and open the project from which you want to receive updates and to which you have administrator access. From the left side of the project screen, click on **Settings** > **Web Hooks**. In the **URL** field enter `http://mattermost-integration-gitlab:5000/new_event`
  2. On the same page, under **Trigger** select **Push events**, **Comment events**, **Issue events**, **Merge Request events**
  3. Uncheck **Enable SSL verification**.  SSL Verification is not necessary since the containers are linked and mattermost-integration-gitlab container is not publishing the port.
  4. Click **Add Web Hook** and check that your new webhook entry is added to the **Web hooks** section below the button.
@@ -143,3 +143,16 @@ This is primarily for use with a Docker instance of Gitlab (Mattermost may or ma
       - `docker run -e "MATTERMOST_WEBHOOK_URL=https://<your-mattermost-webhook-URL>" --name mattermost-integration-gitlab -e "SSL_VERIFY=False" -d mattermost-integration-gitlab`
       - Remove and re-run your gitlab container (not sure if this is avoidable, only way I could get it to work)
   4. If you have any issues, please go to http://forum.mattermost.org and let us know which steps in these instructions were unclear or didn't work.
+
+### Channel Specific Webhooks
+Say you have an issues channel and you want your issues to go there, and your merge requests to a different channel... (Note: you still need a default channel setup via `MATTERMOST_WEBHOOK_URL`
+
+1. **Set up your Mattermost instance to receive incoming webhooks**
+ 1. Log in to your Mattermost account. Click the three dot menu at the top of the left-hand side and go to **Account Settings** > **Integrations** > **Incoming Webhooks**.
+ 2. Under **Add a new incoming webhook** select the channel in which you want GitLab notifications to appear, then click **Add** to create a new entry.
+ 3. Copy the contents next to **URL** of the new webhook you just created (we'll refer to this as `https://<your-mattermost>/hooks/<channel_hook_code>`).
+2. Add the webhook to the GitLab configuration you want
+ 1. Log in to GitLab account and open the project from which you want to receive updates and to which you have administrator access. From the left side of the project screen, click on **Settings** > **Web Hooks**. In the **URL** field enter `http://mattermost-integration-gitlab:5000/new_event_hook/<channel_hook_code>`
+ 2. On the same page, under **Trigger** select what you want to go to that channel... **Push events**, **Comment events**, **Issue events**, **Merge Request events**
+ 3. Uncheck **Enable SSL verification**.  SSL Verification is not necessary since the containers are linked and mattermost-integration-gitlab container is not publishing the port.
+ 4. Click **Add Web Hook** and check that your new webhook entry is added to the **Web hooks** section below the button.
