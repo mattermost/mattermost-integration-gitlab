@@ -8,8 +8,6 @@ from flask import request
 
 app = Flask(__name__)
 
-app.debug = True
-
 USERNAME = 'gitlab'
 ICON_URL = 'https://gitlab.com/uploads/project/avatar/13083/gitlab-logo-square.png'
 MATTERMOST_WEBHOOK_URL = '' # Paste the Mattermost webhook URL you created here
