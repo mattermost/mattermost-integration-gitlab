@@ -12,6 +12,7 @@ USERNAME = 'gitlab'
 ICON_URL = 'https://gitlab.com/uploads/project/avatar/13083/gitlab-logo-square.png'
 MATTERMOST_WEBHOOK_URL = '' # Paste the Mattermost webhook URL you created here
 CHANNEL = '' # Leave this blank to post to the default channel of your webhook
+SSL_VERIFY = True
 
 PUSH_EVENT = 'push'
 ISSUE_EVENT = 'issue'
@@ -47,7 +48,49 @@ def new_event():
 
     data = request.json
     object_kind = data['object_kind']
+    
+    text, base_url = process_data(data, object_kind)
 
+    if len(text) == 0:
+        print 'Text was empty so nothing sent to Mattermost, object_kind=%s' % object_kind
+        return 'OK'
+
+    if len(base_url) != 0:
+        text = fix_gitlab_links(base_url, text)
+
+    post_text(text, MATTERMOST_WEBHOOK_URL)
+
+    return 'OK'
+
+@app.route('/new_event_hook/<use_this_hook>', methods=['POST'])
+def new_event_hook(use_this_hook):
+    """
+    GitLab event handler, handles POST events from a GitLab project
+    """
+
+    if request.json is None:
+        print 'Invalid Content-Type'
+        return 'Content-Type must be application/json and the request body must contain valid JSON', 400
+
+    data = request.json
+    object_kind = data['object_kind']
+
+    text, base_url = process_data(data, object_kind)
+
+    if len(text) == 0:
+        print 'Text was empty so nothing sent to Mattermost, object_kind=%s' % object_kind
+        return 'OK'
+
+    if len(base_url) != 0:
+        text = fix_gitlab_links(base_url, text)
+
+    url_to_use = MATTERMOST_WEBHOOK_URL[0:MATTERMOST_WEBHOOK_URL.find("/hooks/")+7] + use_this_hook
+
+    post_text(text, url_to_use)
+
+    return 'OK'
+
+def process_data(data, object_kind):
     text = ''
     base_url = ''
 
@@ -166,19 +209,10 @@ def new_event():
             )
 
         base_url = data['object_attributes']['target']['web_url']
+        
+    return (text, base_url)
 
-    if len(text) == 0:
-        print 'Text was empty so nothing sent to Mattermost, object_kind=%s' % object_kind
-        return 'OK'
-
-    if len(base_url) != 0:
-        text = fix_gitlab_links(base_url, text)
-
-    post_text(text)
-
-    return 'OK'
-
-def post_text(text):
+def post_text(text, url_to_use):
     """
     Mattermost POST method, posts text to the Mattermost incoming webhook URL
     """
@@ -193,7 +227,10 @@ def post_text(text):
         data['channel'] = CHANNEL
 
     headers = {'Content-Type': 'application/json'}
-    r = requests.post(MATTERMOST_WEBHOOK_URL, headers=headers, data=json.dumps(data))
+    if SSL_VERIFY:
+        r = requests.post(url_to_use, headers=headers, data=json.dumps(data))
+    else:
+        r = requests.post(url_to_use, headers=headers, data=json.dumps(data), verify=False)
 
     if r.status_code is not requests.codes.ok:
         print 'Encountered error posting to Mattermost URL %s, status=%d, response_body=%s' % (MATTERMOST_WEBHOOK_URL, r.status_code, r.json())
@@ -231,6 +268,7 @@ if __name__ == "__main__":
     CHANNEL = os.environ.get('CHANNEL', CHANNEL)
     USERNAME = os.environ.get('USERNAME', USERNAME)
     ICON_URL = os.environ.get('ICON_URL', ICON_URL)
+    SSL_VERIFY = os.environ.get('SSL_VERIFY', 'True') == 'True'
 
     REPORT_EVENTS[PUSH_EVENT] = os.environ.get('PUSH_TRIGGER', str(REPORT_EVENTS[PUSH_EVENT])) == 'True'
     REPORT_EVENTS[ISSUE_EVENT] = os.environ.get('ISSUE_TRIGGER', str(REPORT_EVENTS[ISSUE_EVENT])) == 'True'
