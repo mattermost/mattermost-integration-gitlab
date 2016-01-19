@@ -1,3 +1,6 @@
+### NOTE: THIS REPO IS REPLACED BY https://github.com/NotSqrt/mattermost-integration-gitlab
+The original purpose of this repo was to provide sample code for the community to create Mattermost integrations. The Mattermost core team recommends the repo above be used for further development. 
+
 # GitLab Integration Service for Mattermost
 
 This integrations service posts [issue](http://doc.gitlab.com/ee/web_hooks/web_hooks.html#issues-events), [comment](http://doc.gitlab.com/ee/web_hooks/web_hooks.html#comment-events) and [merge request](http://doc.gitlab.com/ee/web_hooks/web_hooks.html#merge-request-events) events from a GitLab repository into specific Mattermost channels by formatting output from [GitLab's outgoing webhooks](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/web_hooks/web_hooks.md) to [Mattermost's incoming webhooks](https://github.com/mattermost/platform/blob/master/doc/integrations/webhooks/Incoming-Webhooks.md).
